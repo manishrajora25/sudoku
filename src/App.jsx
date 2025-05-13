@@ -1,15 +1,22 @@
 import { useEffect, useState } from "react";
+import { GiPartyPopper } from "react-icons/gi";
+import { ImCross } from "react-icons/im";
 import "./App.css";
 
 function App() {
   const [solvedBoard, setSolvedBoard] = useState([]);
-  const [userName, setUserValue] = useState([]);
+  const [userValue, setUserValue] = useState([]);
   const [solution, setSolution] = useState([]);
+  const [resultMessage, setResultMessage] = useState(null);
+  const [difficulty, setDifficulty] = useState("");
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-  async function fetchSudokuSolution() {
+  async function fetchSudokuSolution(selectedDifficulty) {
     try {
+      setLoading(true);
       const response = await fetch(
-        "https://api.api-ninjas.com/v1/sudokugenerate?difficulty=easy",
+        `https://api.api-ninjas.com/v1/sudokugenerate?difficulty=${selectedDifficulty}`,
         {
           method: "GET",
           headers: {
@@ -19,83 +26,116 @@ function App() {
       );
 
       const result = await response.json();
-      console.log(result);
       if (result && result.solution) {
         setSolvedBoard(result.puzzle);
         setSolution(result.solution);
+        setResultMessage(null);
+        setIsFirstLoad(false);
       }
     } catch (error) {
       console.error("Error:", error);
+    } finally {
+      setLoading(false);
     }
   }
+
   useEffect(() => {
     if (solvedBoard.length > 0) {
       setUserValue(
-        solvedBoard.map((row) => row.map((cell) => (cell === null ? "" : cell)))
+        solvedBoard.map((row) =>
+          row.map((item) => (item === null ? "" : item))
+        )
       );
     }
   }, [solvedBoard]);
 
-  function handleInputChange(rowIndex, Index, updatevalue) {
-    setUserValue((previtems) => {
-      const userUpdateValue = previtems.map((row) => [...row]);
-      userUpdateValue[rowIndex][Index] = updatevalue;
-      return userUpdateValue;
+  function handleInputChange(rowIndex, colIndex, value) {
+    setUserValue((prevValues) => {
+      const updatedValues = prevValues.map((row) => [...row]);
+      updatedValues[rowIndex][colIndex] = value;
+      return updatedValues;
     });
   }
-  let Condition = true;
 
-  function Nextsudoku() {
+  function Submitsudoku() {
+    let isCorrect = true;
     for (let i = 0; i < 9; i++) {
       for (let j = 0; j < 9; j++) {
-        if (solvedBoard[i][j] == null) {
-          if (userName[i][j] !== solution[i][j].toString()) {
-            Condition = false;
+        if (solvedBoard[i][j] === null) {
+          if (userValue[i][j] !== solution[i][j].toString()) {
+            isCorrect = false;
             break;
-            }
+          }
         }
       }
     }
-    if (Condition) {
-      console.log("Well Done");
-    } else {
-      console.log("Next Try");
-    }
+    setResultMessage(
+      isCorrect ? (
+        <span className="success-message">
+          <GiPartyPopper /> Well Done!
+        </span>
+      ) : (
+        <span className="error-message">
+          <ImCross /> Incorrect, try again.
+        </span>
+      )
+    );
   }
 
-  useEffect(() => {
-    fetchSudokuSolution();
-  }, []);
-
   return (
-    <>
-      <div>
-        <div>
-          <div >
-            {solvedBoard.length > 0 ? (
-              <table >
+    <div className="app-container">
+      {/* Overlay during loading */}
+      {loading && (
+        <div className="loading-overlay">
+          <div className="spinner"></div>
+        </div>
+      )}
+  
+      <div className={`sudoku-container ${loading ? "blurred" : ""}`}>
+        <h1 className="title">Sudoku</h1>
+        <div className="difficulty-selector">
+          <label>Select Difficulty:</label>
+          <select
+            value={difficulty}
+            onChange={(e) => {
+              const selectedDifficulty = e.target.value;
+              setDifficulty(selectedDifficulty);
+              fetchSudokuSolution(selectedDifficulty);
+            }}
+          >
+            <option value="">Choose</option>
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+        </div>
+  
+        {solvedBoard.length > 0 && !loading && (
+          <>
+            <div className="sudoku-grid">
+              <table>
                 <tbody>
                   {solvedBoard.map((row, rowIndex) => (
                     <tr key={rowIndex}>
-                      {row.map((item, Index) => (
+                      {row.map((item, colIndex) => (
                         <td
-                          key={Index}
-                          
+                          key={colIndex}
+                          className={item === null ? "editable-cell" : "fixed-cell"}
                         >
                           {item !== null ? (
                             item
                           ) : (
                             <input
-                              
-                              onChange={(e) =>
-                                handleInputChange(
-                                  rowIndex,
-                                  Index,
-                                  e.target.value
-                                )
-                              }
-                             
-                            ></input>
+                              type="text"
+                              inputMode="numeric"
+                              maxLength={1}
+                              onChange={(e) => {
+                                const value = e.target.value;
+                                if (/^[1-9]?$/.test(value)) {
+                                  handleInputChange(rowIndex, colIndex, value);
+                                }
+                              }}
+                            />
                           )}
                         </td>
                       ))}
@@ -103,17 +143,17 @@ function App() {
                   ))}
                 </tbody>
               </table>
-            ) : (
-              <h1>Loading...</h1>
-            )}
-          </div>
-          <button
-            onClick={Nextsudoku}>
-            Submit
-          </button>
-        </div>
+            </div>
+            <button className="submit-button" onClick={Submitsudoku}>
+              Submit
+            </button>
+          </>
+        )}
+  
+        {resultMessage && <div className="result-message">{resultMessage}</div>}
       </div>
-    </>
+    </div>
   );
-}
+};  
+
 export default App;
