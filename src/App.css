@@ -1,0 +1,85 @@
+
+   
+   /* General page styles */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f7f7f7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Flex container for centering the game */
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Table styling */
+table {
+  border-collapse: collapse;
+  margin: 20px auto;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+td {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  /* vertical-align: middle; */
+  border: 1px solid #ccc;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: #f9f9f9;
+}
+
+td:nth-child(3n) {
+  border-right: 2px solid #333;
+}
+
+tr:nth-child(3n) td {
+  border-bottom: 2px solid #333;
+}
+
+input {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  /* border: 1px solid #888; */
+  background-color: #d4e1f6;
+  outline: none;
+  border: none;
+}
+
+/* input:focus {
+  border: 2px solid #007bff;
+} */
+
+/* Button styling */
+button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* button:active {
+  background-color: #004494;
+} */
