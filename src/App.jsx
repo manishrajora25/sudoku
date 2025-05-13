@@ -104,7 +104,7 @@ function App() {
                 </tbody>
               </table>
             ) : (
-              <p>Loading...</p>
+              <h1>Loading...</h1>
             )}
           </div>
           <button
