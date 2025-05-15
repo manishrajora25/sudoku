@@ -4,10 +4,10 @@ body {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
-  background-color: #f7f7f7;
+  /* background-color: burlywood; */
   display: flex;
   justify-content: center;
-  align-items: center;
+  /* align-items: center; */
   height: 100vh;
   color: black;
 }
@@ -104,6 +104,13 @@ button:hover {
   justify-content: center;
   margin-top: 20px;
 }
+/* .sudoku_container{
+  margin-top: 100%;
+  background-color: white;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 2px 1px 15px 6px black;
+} */
 
 .spinner {
   width: 30px;
@@ -126,8 +133,203 @@ button:hover {
 }
 
 
+.success_message{
+  text-align: center;
+  margin-top: 20%;
+}
+.error_message{
+  text-align: center;
+  margin-top: 20%;
+}
+
+/* Result Container */
+.result-container {
+  margin-top: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+ /* Dark background */
+}
+
+/* Result Message Styles */
+.result-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.result-message .icon {
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.result-message.success {
+  color: #38a169; /* Green for success */
+}
+
+.result-message.error {
+  color: #e53e3e; /* Red for error */
+}
+
+/* Retry Button Styles */
+.retry-button {
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: white;
+  background-color: #3182ce; /* Blue button */
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.retry-button:hover {
+  background-color: #2b6cb0; /* Darker blue on hover */
+}
 
 
+@media (min-width: 320px) and (max-width: 570px) {
+  .app_container {
+    padding: 10px;
+  }
 
+  .sudoku_container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 10px;
+  }
 
+  .title {
+    font-size: 1.8rem;
+    text-align: center;
+  }
 
+  .difficulty-selector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .difficulty-selector label {
+    font-size: 1rem;
+    margin-bottom: 5px;
+  }
+
+  .difficulty-selector select {
+    font-size: 1rem;
+    padding: 5px;
+    width: 100%;
+    max-width: 200px;
+  }
+
+  .sudoku-grid {
+    display: flex;
+    justify-content: center;
+    overflow-x: auto;
+    margin: 10px 0;
+  }
+
+  .sudoku-grid table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 350px;
+  }
+
+  .sudoku-grid td {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+  }
+
+  .sudoku-grid .fixed-cell {
+    background-color: #f0f0f0;
+    font-weight: bold;
+  }
+
+  .sudoku-grid .editable-cell input {
+    width: 100%;
+    height: 100%;
+    font-size: 1rem;
+    text-align: center;
+    border: none;
+    outline: none;
+  }
+
+  .submit-button {
+    width: 100%;
+    max-width: 200px;
+    padding: 10px;
+    font-size: 1rem;
+    margin: 10px auto;
+    display: block;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .submit-button:hover {
+    background-color: #45a049;
+  }
+
+  .result-container {
+    text-align: center;
+    padding: 20px;
+  }
+
+  .retry-button {
+    width: 100%;
+    max-width: 200px;
+    padding: 10px;
+    font-size: 1rem;
+    margin-top: 10px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .retry-button:hover {
+    background-color: #d32f2f;
+  }
+
+  .loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.8);
+    z-index: 1000;
+  }
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 5px solid #ccc;
+    border-top-color: #333;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
